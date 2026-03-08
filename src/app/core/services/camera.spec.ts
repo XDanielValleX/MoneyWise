@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Camera } from './camera.service';
+import { CameraService } from './camera.service';
 
 describe('Camera', () => {
-  let service: Camera;
+  let service: CameraService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Camera);
+    service = TestBed.inject(CameraService);
   });
 
   it('should be created', () => {
