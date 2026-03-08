@@ -1,6 +1,7 @@
+/// <reference types="jest" />
 import { TestBed } from '@angular/core/testing';
 
-import { Analytics } from './analytics';
+import { Analytics } from './analytics.service';
 
 describe('Analytics', () => {
   let service: Analytics;
