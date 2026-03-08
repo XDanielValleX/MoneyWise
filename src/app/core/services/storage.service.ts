@@ -20,7 +20,7 @@ export class StorageService {
     this._storage = storage;
   }
 
-  // Guardar un dato (ej: set('usuario', datosDelUsuario))
+  // Guardar un dato (set('usuario', datosDelUsuario))
   public async set(key: string, value: any) {
     await this.init();
     return this._storage?.set(key, value);
@@ -38,10 +38,9 @@ export class StorageService {
     return this._storage?.remove(key);
   }
 
-  // Limpiar toda la base de datos (útil para cuando el usuario cierra sesión)
+  // Limpiar toda la base de datos (cuando el usuario cierra sesión)
   public async clear() {
     await this.init();
     return this._storage?.clear();
   }
-  
 }
