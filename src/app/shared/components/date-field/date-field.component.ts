@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-date-field',
   templateUrl: './date-field.component.html',
   styleUrls: ['./date-field.component.scss'],
+  standalone: false
 })
 export class DateFieldComponent  implements OnInit {
 

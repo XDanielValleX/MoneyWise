@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-photo-selector',
   templateUrl: './photo-selector.component.html',
   styleUrls: ['./photo-selector.component.scss'],
+  standalone: false
 })
 export class PhotoSelectorComponent  implements OnInit {
 

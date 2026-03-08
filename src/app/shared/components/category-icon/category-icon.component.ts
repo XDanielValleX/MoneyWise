@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-category-icon',
   templateUrl: './category-icon.component.html',
   styleUrls: ['./category-icon.component.scss'],
+  standalone: false
 })
 export class CategoryIconComponent  implements OnInit {
 

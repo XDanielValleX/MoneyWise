@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.scss'],
+  standalone: false
 })
 export class TransactionFormComponent  implements OnInit {
 

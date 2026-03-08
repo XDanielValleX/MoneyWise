@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-filter-bar',
   templateUrl: './filter-bar.component.html',
   styleUrls: ['./filter-bar.component.scss'],
+  standalone: false
 })
 export class FilterBarComponent  implements OnInit {
 

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-transaction-detail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss'],
+  standalone: false
 })
 export class TransactionDetailComponent  implements OnInit {
 
