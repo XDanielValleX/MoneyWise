@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-category-badge',
@@ -6,10 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category-badge.component.scss'],
   standalone: false
 })
-export class CategoryBadgeComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+export class CategoryBadgeComponent {
+  // Recibe el nombre de la categoría (ej. 'Alimentación')
+  @Input() categoria: string = 'Otros';
 }

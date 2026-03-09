@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CameraService } from '../../../core/services/camera.service';
 
 @Component({
   selector: 'app-photo-selector',
@@ -6,10 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./photo-selector.component.scss'],
   standalone: false
 })
-export class PhotoSelectorComponent  implements OnInit {
+export class PhotoSelectorComponent {
+  // Emite la foto en formato base64 hacia el formulario
+  @Output() photoSelected = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private cameraService: CameraService) { }
 
-  ngOnInit() {}
+  async takePhoto() {
+    const photo = await this.cameraService.tomarFoto();
+    if (photo) {
+      this.photoSelected.emit(photo);
+    }
+  }
 
+  async chooseFromGallery() {
+    const photo = await this.cameraService.seleccionarDeGaleria();
+    if (photo) {
+      this.photoSelected.emit(photo);
+    }
+  }
 }

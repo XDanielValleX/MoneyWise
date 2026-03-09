@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-input-field',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./input-field.component.scss'],
   standalone: false
 })
-export class InputFieldComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+export class InputFieldComponent {
+  @Input() label: string = '';
+  @Input() type: string = 'text'; // Puede ser 'text', 'number', etc.
+  @Input() placeholder: string = '';
+  @Input() icon?: string;
+  @Input() control!: FormControl; // ¡Aquí recibe la magia reactiva de Angular!
 }

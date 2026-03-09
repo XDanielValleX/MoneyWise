@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { PhotoGalleryModalComponent } from '../photo-gallery-modal/photo-gallery-modal.component';
 
 @Component({
   selector: 'app-photo-preview',
@@ -6,10 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./photo-preview.component.scss'],
   standalone: false
 })
-export class PhotoPreviewComponent  implements OnInit {
+export class PhotoPreviewComponent {
+  @Input() photoUrl!: string;
+  @Output() onRemove = new EventEmitter<void>();
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
+  removePhoto() {
+    this.onRemove.emit();
+  }
 
+  // Abre el componente Modal que creamos en el paso anterior
+  async viewPhoto() {
+    const modal = await this.modalCtrl.create({
+      component: PhotoGalleryModalComponent,
+      componentProps: { photoUrl: this.photoUrl }
+    });
+    await modal.present();
+  }
 }

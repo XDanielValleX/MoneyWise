@@ -1,3 +1,7 @@
-<p>
-  photo-preview works!
-</p>
+<div class="preview-container" *ngIf="photoUrl">
+  <img [src]="photoUrl" (click)="viewPhoto()" class="preview-img" alt="Vista previa" />
+
+  <ion-fab-button size="small" color="danger" class="delete-btn" (click)="removePhoto()">
+    <ion-icon name="trash"></ion-icon>
+  </ion-fab-button>
+</div>

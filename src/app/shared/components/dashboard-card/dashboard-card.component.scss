@@ -1,0 +1,26 @@
+.dashboard-card {
+    margin: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        ion-card-subtitle {
+            margin: 0;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    ion-card-content {
+        padding-top: 0;
+    }
+}

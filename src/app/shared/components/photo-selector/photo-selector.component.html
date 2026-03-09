@@ -1,3 +1,11 @@
-<p>
-  photo-selector works!
-</p>
+<div class="photo-selector-actions">
+  <ion-button fill="outline" color="primary" expand="block" (click)="takePhoto()">
+    <ion-icon name="camera" slot="start"></ion-icon>
+    Tomar Foto
+  </ion-button>
+
+  <ion-button fill="clear" color="medium" expand="block" (click)="chooseFromGallery()">
+    <ion-icon name="image" slot="start"></ion-icon>
+    Elegir de Galería
+  </ion-button>
+</div>

@@ -1,0 +1,21 @@
+.progress-container {
+    padding: 0 10px;
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .monto {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--ion-color-dark);
+        }
+    }
+
+    ion-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+    }
+}

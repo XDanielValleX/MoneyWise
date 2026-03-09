@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-photo-gallery-modal',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./photo-gallery-modal.component.scss'],
   standalone: false
 })
-export class PhotoGalleryModalComponent  implements OnInit {
+export class PhotoGalleryModalComponent {
+  @Input() photoUrl!: string; // Recibe la imagen a mostrar
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
-
+  close() {
+    this.modalCtrl.dismiss();
+  }
 }

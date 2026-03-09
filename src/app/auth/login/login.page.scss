@@ -1,0 +1,31 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+
+    .header-text {
+        margin-bottom: 2rem;
+        text-align: center;
+
+        h2 {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--ion-color-medium);
+            margin-top: 0;
+        }
+    }
+
+    ion-note {
+        display: block;
+        margin-top: -10px;
+        margin-bottom: 15px;
+        padding-left: 15px;
+        font-size: 0.8rem;
+    }
+}

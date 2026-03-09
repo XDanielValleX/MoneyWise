@@ -1,3 +1,26 @@
-<p>
-  transaction-item works!
-</p>
+<ion-item button detail="true" (click)="handleClick()" class="transaction-item">
+
+  <ion-avatar slot="start" class="category-avatar" [style.background]="transaccion.categoria | categoryColor">
+    <ion-icon [name]="transaccion.categoria | categoryIcon" color="light"></ion-icon>
+  </ion-avatar>
+
+  <ion-label>
+    <h2>
+      {{ transaccion.categoria }}
+      <ion-badge *ngIf="transaccion.comprobante" color="medium" class="receipt-badge">
+        <ion-icon name="image-outline"></ion-icon>
+      </ion-badge>
+    </h2>
+    <p *ngIf="transaccion.descripcion" class="desc-text">{{ transaccion.descripcion }}</p>
+    <p><ion-text color="medium">{{ transaccion.fecha | dateFormat }}</ion-text></p>
+  </ion-label>
+
+  <div slot="end" class="end-container">
+    <app-amount-display [monto]="transaccion.monto" [tipo]="transaccion.tipo" tamano="small"></app-amount-display>
+
+    <ion-thumbnail *ngIf="transaccion.comprobante" class="mini-thumbnail ion-margin-top">
+      <img [src]="transaccion.comprobante" alt="Comprobante" />
+    </ion-thumbnail>
+  </div>
+
+</ion-item>

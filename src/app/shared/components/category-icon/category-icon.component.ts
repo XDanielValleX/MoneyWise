@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-category-icon',
@@ -6,10 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category-icon.component.scss'],
   standalone: false
 })
-export class CategoryIconComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+export class CategoryIconComponent {
+  @Input() categoria: string = 'Otros';
+  @Input() size: 'small' | 'medium' | 'large' = 'medium';
 }

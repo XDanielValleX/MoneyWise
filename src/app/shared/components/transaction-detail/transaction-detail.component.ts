@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Transaccion } from '../../../core/models/transaccion';
 
 @Component({
   selector: 'app-transaction-detail',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./transaction-detail.component.scss'],
   standalone: false
 })
-export class TransactionDetailComponent  implements OnInit {
+export class TransactionDetailComponent {
+  @Input() transaccion!: Transaccion;
 
-  constructor() { }
-
-  ngOnInit() {}
-
+  // Eventos para avisar al padre qué botón se presionó
+  @Output() onClose = new EventEmitter<void>();
+  @Output() onEdit = new EventEmitter<Transaccion>();
+  @Output() onDelete = new EventEmitter<string>(); // Pasamos el ID para borrar
 }
