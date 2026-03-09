@@ -27,20 +27,44 @@ export class AuthService {
   // RF-1: Autenticación Simulada (Login)
   async login(email: string, password: string): Promise<boolean> {
     if (email && password) {
-      const user: User = { id: Date.now().toString(), email };
-      await this.storage.set('currentUser', user); // Persistencia
-      this.currentUserSubject.next(user);
-      return true;
+      // 1. Ahora traemos la LISTA completa de usuarios ('registeredUsers' en plural)
+      // Si no hay nada guardado aún, iniciamos con un arreglo vacío []
+      const users = await this.storage.get('registeredUsers') || [];
+
+      // 2. Buscamos en la lista si hay algún usuario con ese correo y contraseña
+      const savedUser = users.find((u: User) => u.email === email && u.password === password);
+
+      if (savedUser) {
+        // ¡Login exitoso! Lo guardamos como el usuario activo
+        await this.storage.set('currentUser', savedUser);
+        this.currentUserSubject.next(savedUser);
+        return true;
+      }
     }
     return false;
   }
 
   // RF-1: Autenticación Simulada (Registro)
-  async register(email: string, password: string): Promise<boolean> {
-    if (email && password) {
-      const user: User = { id: Date.now().toString(), email, password };
-      await this.storage.set('currentUser', user); // Persistencia local
-      this.currentUserSubject.next({ id: user.id, email: user.email });
+  async register(nombre: string, email: string, password: string): Promise<boolean> {
+    if (nombre && email && password) {
+      const user = { id: Date.now().toString(), nombre, email, password };
+
+      // 1. Traemos la lista de todos los usuarios registrados
+      const users = await this.storage.get('registeredUsers') || [];
+
+      // (Opcional pero genial) Evitamos que se registren 2 correos iguales
+      const emailExiste = users.find((u: User) => u.email === email);
+      if (emailExiste) {
+        console.error('Este correo ya está registrado');
+        return false;
+      }
+
+      // 2. Metemos al nuevo usuario en la lista
+      users.push(user);
+
+      // 3. Guardamos la LISTA completa de nuevo en el storage
+      await this.storage.set('registeredUsers', users);
+
       return true;
     }
     return false;

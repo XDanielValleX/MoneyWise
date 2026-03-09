@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+// Importamos tus servicios
+import { AuthService } from '../core/services/auth.service';
+import { TransaccionService } from '../core/services/transaccion.service';
+import { StorageService } from '../core/services/storage.service';
+
+// ¡Importamos tus Modelos!
+import { Transaccion } from '../core/models/transaccion';
+import { User } from '../core/models/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,69 +17,74 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.page.scss'],
   standalone: false
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy {
 
-  userName: string = 'Daniel';
-  totalBalance: number = 2540.50;
-  totalIncome: number = 3200.00;
-  totalExpense: number = 659.50;
+  userName: string = 'Usuario';
+  totalBalance: number = 0;
+  totalIncome: number = 0;
+  totalExpense: number = 0;
 
   gastosPorCategoria: any[] = [];
-  recentTransactions: any[] = [];
+  recentTransactions: Transaccion[] = [];
 
-  constructor() { }
+  private transaccionesSub!: Subscription;
 
-  ngOnInit() {
-    this.cargarDatos();
+  constructor(
+    private authService: AuthService,
+    private transaccionService: TransaccionService,
+    private storageService: StorageService,
+    private router: Router
+  ) { }
+
+  async ngOnInit() {
+    await this.cargarUsuario();
+    this.suscribirseATransacciones();
   }
 
-  cargarDatos() {
-    // Datos para las barras de progreso
-    this.gastosPorCategoria = [
-      { nombre: 'Alimentación', total: 300, porcentaje: 0.6 },
-      { nombre: 'Transporte', total: 150, porcentaje: 0.3 },
-      { nombre: 'Ocio', total: 50, porcentaje: 0.1 }
-    ];
+  ngOnDestroy() {
+    if (this.transaccionesSub) {
+      this.transaccionesSub.unsubscribe();
+    }
+  }
 
-    // Datos simulando el modelo Transaccion
-    this.recentTransactions = [
-      {
-        id: '1',
-        tipo: 'gasto',
-        categoria: 'Alimentación',
-        monto: 45.50,
-        fecha: new Date().toISOString(),
-        descripcion: 'Compra en supermercado'
-      },
-      {
-        id: '2',
-        tipo: 'ingreso',
-        categoria: 'Salario',
-        monto: 1500.00,
-        fecha: new Date().toISOString(),
-        descripcion: 'Quincena'
-      },
-      {
-        id: '3',
-        tipo: 'gasto',
-        categoria: 'Transporte',
-        monto: 15.00,
-        fecha: new Date().toISOString(),
-        descripcion: 'Gasolina',
-        comprobante: 'https://via.placeholder.com/150' // Prueba del badge/imagen
+  async cargarUsuario() {
+    // Usamos tu interfaz User estricta
+    const user: User = await this.storageService.get('currentUser');
+
+    if (user) {
+      // Si el usuario tiene nombre (que ya lo configuramos en el registro), lo usamos.
+      // Si por alguna razón no lo tiene, hacemos el respaldo de cortar el email.
+      if (user.nombre) {
+        this.userName = user.nombre;
+      } else if (user.email) {
+        this.userName = user.email.split('@')[0];
+        this.userName = this.userName.charAt(0).toUpperCase() + this.userName.slice(1);
       }
-    ];
+    }
   }
 
-  // Se ejecuta cuando haces clic en una transacción
-  verDetalleTransaccion(transaccion: any) {
-    console.log('Ver detalle de:', transaccion);
-    // Más adelante aquí pondremos la navegación al detalle
+  suscribirseATransacciones() {
+    this.transaccionesSub = this.transaccionService.transacciones$.subscribe((transacciones: Transaccion[]) => {
+      this.totalIncome = this.transaccionService.totalIngresos;
+      this.totalExpense = this.transaccionService.totalGastos;
+      this.totalBalance = this.transaccionService.saldoActual;
+      this.gastosPorCategoria = this.transaccionService.getGastosPorCategoria();
+
+      this.recentTransactions = transacciones.slice(0, 5);
+    });
   }
 
-  // Se ejecuta cuando haces clic en el botón del empty state
+  verDetalleTransaccion(transaccion: Transaccion) {
+    this.router.navigate(['/tabs/transacciones/detalle', transaccion.id]);
+  }
+
+  // dashboard.page.ts
   irANuevaTransaccion() {
-    console.log('Navegando a crear transacción...');
-    // Aquí podemos redirigir al formulario de nueva transacción
+    // Te lleva a la pestaña de la lista de movimientos
+    this.router.navigate(['/tabs/transacciones']);
+  }
+
+  cerrarSesion() {
+    this.authService.logout();
   }
 }

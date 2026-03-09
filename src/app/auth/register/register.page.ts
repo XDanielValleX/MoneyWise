@@ -15,7 +15,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService // <-- Inyectamos el servicio
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -28,18 +28,18 @@ export class RegisterPage implements OnInit {
 
   async onRegister() {
     if (this.registerForm.valid) {
-      // 1. Extraemos el email y el password del formulario
-      const { email, password } = this.registerForm.value;
+      // 1. Extraemos el nombre, email y el password del formulario
+      const { nombre, email, password } = this.registerForm.value;
 
       console.log('Registrando usuario...');
 
-      // 2. Le pasamos exactamente los 2 argumentos que pide tu servicio
-      const success = await this.authService.register(email, password);
+      // 2. Le pasamos exactamente los 3 argumentos que pide tu servicio
+      const success = await this.authService.register(nombre, email, password);
 
       if (success) {
-        console.log('¡Usuario registrado y logueado con éxito!');
-        // 3. Como el registro fue exitoso, lo mandamos al dashboard
-        this.router.navigate(['/tabs/dashboard']);
+        console.log('¡Usuario registrado con éxito!');
+        // 3. Como pediste, ahora lo mandamos al login para que inicie sesión manualmente
+        this.router.navigate(['/auth/login']);
       }
     } else {
       console.log('Formulario de registro inválido');

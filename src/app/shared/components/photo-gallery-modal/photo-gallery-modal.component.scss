@@ -1,3 +1,8 @@
+ion-content {
+    --background: #000000;
+    /* Fondo negro puro para resaltar la imagen */
+}
+
 .img-wrapper {
     display: flex;
     align-items: center;
@@ -9,5 +14,6 @@
         max-width: 100%;
         max-height: 100%;
         border-radius: 8px;
+        object-fit: contain;
     }
 }

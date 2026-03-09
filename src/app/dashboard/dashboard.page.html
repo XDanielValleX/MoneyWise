@@ -2,8 +2,8 @@
   <ion-toolbar>
     <ion-title>Resumen Financiero</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      <ion-button (click)="cerrarSesion()" color="danger">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -12,7 +12,7 @@
 <ion-content class="ion-padding" [fullscreen]="true">
 
   <div class="welcome-text ion-margin-bottom">
-    <h2>Hola, {{ userName }} </h2>
+    <h2>Hola, {{ userName }}</h2>
     <p>Tu balance al día de hoy.</p>
   </div>
 
@@ -34,6 +34,11 @@
 
   <div class="categories-section ion-margin-top">
     <h3>Gastos por Categoría</h3>
+
+    <div *ngIf="gastosPorCategoria.length === 0" class="ion-text-center ion-padding-vertical">
+      <ion-note>No hay gastos registrados aún.</ion-note>
+    </div>
+
     <app-progress-bar-category *ngFor="let cat of gastosPorCategoria" [categoria]="cat.nombre" [monto]="cat.total"
       [porcentaje]="cat.porcentaje">
     </app-progress-bar-category>
@@ -42,7 +47,8 @@
   <div class="recent-transactions ion-margin-top">
     <div class="transactions-header">
       <h3>Últimos Movimientos</h3>
-      <ion-button fill="clear" size="small" routerLink="/tabs/transacciones">Ver todo</ion-button>
+      <ion-button *ngIf="recentTransactions.length > 0" fill="clear" size="small" routerLink="/tabs/transacciones">Ver
+        todo</ion-button>
     </div>
 
     <ion-list lines="none" *ngIf="recentTransactions.length > 0">
@@ -51,8 +57,8 @@
       </app-transaction-item>
     </ion-list>
 
-    <app-empty-state *ngIf="recentTransactions.length === 0" mensaje="No tienes transacciones recientes."
-      icono="wallet-outline" accion="Nuevo Movimiento" (onAccion)="irANuevaTransaccion()">
+    <app-empty-state *ngIf="recentTransactions.length === 0" mensaje="Aún no tienes movimientos." icono="wallet-outline"
+      accion="Nuevo Movimiento" (onAccion)="irANuevaTransaccion()">
     </app-empty-state>
   </div>
 

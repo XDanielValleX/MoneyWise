@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { Transaccion } from '../../core/models/transaccion';
+import { TransaccionService } from '../../core/services/transaccion.service'; // <-- Importamos el servicio
 
 @Component({
   selector: 'app-lista-transacciones',
@@ -8,33 +11,37 @@ import { Transaccion } from '../../core/models/transaccion';
   styleUrls: ['./lista-transacciones.page.scss'],
   standalone: false
 })
-export class ListaTransaccionesPage implements OnInit {
+export class ListaTransaccionesPage implements OnInit, OnDestroy {
 
   transacciones: Transaccion[] = [];
 
-  // Variables para los filtros (coinciden con tu FilterBar)
   textoBusqueda: string = '';
   filtroTipo: string = 'todos';
   filtroCategoria: string = 'todas';
 
   isModalOpen: boolean = false;
+  private transaccionesSub!: Subscription; // Para manejar la suscripción
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private transaccionService: TransaccionService // <-- Lo inyectamos
+  ) { }
 
   ngOnInit() {
-    this.cargarDatosPrueba();
+    // Nos suscribimos a los datos reales
+    this.transaccionesSub = this.transaccionService.transacciones$.subscribe(datos => {
+      this.transacciones = datos;
+    });
   }
 
-  cargarDatosPrueba() {
-    this.transacciones = [
-      { id: '1', tipo: 'gasto', categoria: 'Alimentación', monto: 45.50, fecha: new Date().toISOString(), descripcion: 'Supermercado' },
-      { id: '2', tipo: 'ingreso', categoria: 'Salario', monto: 1500.00, fecha: new Date().toISOString(), descripcion: 'Pago Quincena' }
-    ];
+  ngOnDestroy() {
+    if (this.transaccionesSub) {
+      this.transaccionesSub.unsubscribe();
+    }
   }
 
-  // Handlers para los @Outputs de tu FilterBarComponent
   handleSearch(texto: string) {
-    this.textoBusqueda = texto; // Esto dispara el pipe searchByText automáticamente
+    this.textoBusqueda = texto;
   }
 
   handleType(val: string) {
@@ -52,8 +59,22 @@ export class ListaTransaccionesPage implements OnInit {
   abrirModal() { this.isModalOpen = true; }
   cerrarModal() { this.isModalOpen = false; }
 
-  guardarNuevaTransaccion(datos: any) {
-    console.log('Datos listos para el service:', datos);
+  async guardarNuevaTransaccion(datos: any) {
+    // 1. Armamos el objeto de transacción con un ID único y la fecha actual
+    const nuevaTransaccion: Transaccion = {
+      id: Date.now().toString(), // Generamos un ID rápido basado en la fecha exacta
+      fecha: new Date().toISOString(),
+      tipo: datos.tipo,
+      categoria: datos.categoria,
+      monto: datos.monto,
+      descripcion: datos.descripcion,
+      comprobante: datos.comprobante // Si tu form manda foto, la guardamos
+    };
+
+    // 2. Lo enviamos al servicio para que lo guarde en el Storage
+    await this.transaccionService.agregarTransaccion(nuevaTransaccion);
+
+    console.log('¡Transacción guardada exitosamente!');
     this.cerrarModal();
   }
 }

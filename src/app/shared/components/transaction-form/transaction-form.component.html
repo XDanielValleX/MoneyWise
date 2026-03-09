@@ -1,32 +1,55 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="form-container">
+<div class="modal-wrapper">
 
-  <app-select-field label="Tipo de Transacción" icon="swap-vertical" [control]="getControl('tipo')"
-    [options]="tipos"></app-select-field>
+  <ion-content class="ion-padding">
+    <form [formGroup]="form">
+      <app-select-field label="Tipo de Transacción" icon="swap-vertical" [control]="getControl('tipo')"
+        [options]="tipos"></app-select-field>
 
-  <app-input-field label="Monto" type="number" icon="cash" placeholder="0.00"
-    [control]="getControl('monto')"></app-input-field>
+      <app-input-field label="Monto" type="number" icon="cash" placeholder="0.00"
+        [control]="getControl('monto')"></app-input-field>
 
-  <app-select-field label="Categoría" icon="pricetag" [control]="getControl('categoria')"
-    [options]="categorias"></app-select-field>
+      <app-select-field label="Categoría" icon="pricetag" [control]="getControl('categoria')"
+        [options]="categorias"></app-select-field>
 
-  <app-date-field label="Fecha" icon="calendar" [control]="getControl('fecha')"></app-date-field>
+      <app-date-field label="Fecha" icon="calendar" [control]="getControl('fecha')"></app-date-field>
 
-  <app-input-field label="Descripción (Opcional)" type="text" icon="document-text" placeholder="Ej. Almuerzo de trabajo"
-    [control]="getControl('descripcion')"></app-input-field>
+      <app-input-field label="Descripción (Opcional)" type="text" icon="document-text"
+        placeholder="Ej. Almuerzo de trabajo" [control]="getControl('descripcion')"></app-input-field>
 
-  <div class="photo-section ion-margin-top ion-padding-horizontal">
-    <ion-label color="medium"><strong>Comprobante (Opcional)</strong></ion-label>
+      <div class="photo-section ion-margin-top">
+        <ion-label color="medium"><strong>Comprobante (Opcional)</strong></ion-label>
 
-    <app-photo-selector *ngIf="!fotoTemporal" (photoSelected)="setFoto($event)"></app-photo-selector>
+        <div *ngIf="!fotoTemporal" class="ion-margin-top">
+          <ion-button expand="block" fill="outline" (click)="capturarFoto()">
+            <ion-icon slot="start" name="camera"></ion-icon> TOMAR FOTO
+          </ion-button>
+          <ion-button expand="block" fill="clear" color="medium" (click)="buscarEnGaleria()">
+            <ion-icon slot="start" name="image"></ion-icon> ELEGIR DE GALERÍA
+          </ion-button>
+        </div>
 
-    <div class="photo-preview-wrapper" *ngIf="fotoTemporal">
-      <app-photo-preview [photoUrl]="fotoTemporal" (onRemove)="borrarFoto()"></app-photo-preview>
-    </div>
-  </div>
+        <div class="photo-preview-wrapper ion-margin-top ion-text-center" *ngIf="fotoTemporal">
+          <img [src]="fotoTemporal" alt="Foto del comprobante" class="photo-preview">
+          <ion-button expand="block" fill="clear" color="danger" (click)="borrarFoto()">
+            <ion-icon slot="start" name="trash"></ion-icon> ELIMINAR FOTO
+          </ion-button>
+        </div>
+      </div>
+    </form>
+  </ion-content>
 
-  <div class="action-buttons ion-margin-top ion-padding">
-    <ion-button expand="block" fill="outline" color="medium" (click)="onCancel.emit()">Cancelar</ion-button>
-    <ion-button expand="block" type="submit" color="primary">Guardar Transacción</ion-button>
-  </div>
-
-</form>
+  <ion-footer class="ion-no-border ion-padding">
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" fill="outline" color="medium" (click)="cancelar()">
+          Cancelar
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" color="primary" (click)="submit()" [disabled]="form.invalid">
+          Guardar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</div>

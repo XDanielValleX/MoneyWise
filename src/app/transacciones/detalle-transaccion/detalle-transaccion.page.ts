@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController, ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+
 import { Transaccion } from '../../core/models/transaccion';
+import { TransaccionService } from '../../core/services/transaccion.service';
+import { TransactionFormComponent } from '../../shared/components/transaction-form/transaction-form.component';
 
 @Component({
   selector: 'app-detalle-transaccion',
@@ -9,14 +13,16 @@ import { Transaccion } from '../../core/models/transaccion';
   styleUrls: ['./detalle-transaccion.page.scss'],
   standalone: false
 })
-export class DetalleTransaccionPage implements OnInit {
+export class DetalleTransaccionPage implements OnInit, OnDestroy {
   transaccion?: Transaccion;
+  private transaccionSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private alertCtrl: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private modalCtrl: ModalController, // <-- Inyectado
+    private transaccionService: TransaccionService
   ) { }
 
   ngOnInit() {
@@ -26,27 +32,45 @@ export class DetalleTransaccionPage implements OnInit {
     }
   }
 
-  cargarDatos(id: string) {
-    // MOCK: Datos temporales mientras creamos el TransaccionService
-    const mock: Transaccion[] = [
-      { id: '1', tipo: 'gasto', categoria: 'Alimentación', monto: 45.50, fecha: new Date().toISOString(), descripcion: 'Cena familiar', comprobante: 'assets/recibo.jpg' },
-      { id: '2', tipo: 'ingreso', categoria: 'Salario', monto: 1500.00, fecha: new Date().toISOString(), descripcion: 'Pago quincenal' }
-    ];
-    this.transaccion = mock.find(t => t.id === id);
+  ngOnDestroy() {
+    if (this.transaccionSub) {
+      this.transaccionSub.unsubscribe();
+    }
   }
 
-  // Manejador para el botón "Cerrar" de tu componente
+  cargarDatos(id: string) {
+    this.transaccionSub = this.transaccionService.transacciones$.subscribe(transacciones => {
+      this.transaccion = transacciones.find(t => t.id === id);
+    });
+  }
+
   regresar() {
     this.navCtrl.back();
   }
 
-  // Manejador para el evento onEdit
-  abrirEdicion(t: Transaccion) {
-    console.log('Navegando a edición de:', t.id);
-    // Próximo paso: Lógica para abrir modal o página de edición
+  // LÓGICA DE EDICIÓN USANDO MODALCONTROLLER
+  async abrirEdicion(t: Transaccion) {
+    const modal = await this.modalCtrl.create({
+      component: TransactionFormComponent,
+      componentProps: {
+        transaccion: t // Pasamos la transacción al formulario
+      }
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data) {
+      // Combinamos los datos nuevos manteniendo el ID original
+      const transaccionEditada: Transaccion = {
+        ...t,
+        ...data
+      };
+      await this.transaccionService.actualizarTransaccion(transaccionEditada);
+    }
   }
 
-  // Manejador para el evento onDelete (Punto 8: ion-alert)
   async confirmarEliminacion(id: string) {
     const alert = await this.alertCtrl.create({
       header: 'Confirmar',
@@ -55,9 +79,8 @@ export class DetalleTransaccionPage implements OnInit {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Eliminar',
-          cssClass: 'delete-button',
-          handler: () => {
-            console.log('Eliminando:', id);
+          handler: async () => {
+            await this.transaccionService.eliminarTransaccion(id);
             this.regresar();
           }
         }

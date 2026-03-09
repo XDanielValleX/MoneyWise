@@ -29,10 +29,12 @@
         </ion-fab-button>
     </ion-fab>
 
-    <ion-modal [isOpen]="isModalOpen" (didDismiss)="cerrarModal()">
+    <ion-modal [isOpen]="isModalOpen" (didDismiss)="cerrarModal()" class="modal-ajustado">
         <ng-template>
-            <app-transaction-form (onSave)="guardarNuevaTransaccion($event)" (onCancel)="cerrarModal()">
-            </app-transaction-form>
+            <ion-content class="ion-padding">
+                <app-transaction-form (onSave)="guardarNuevaTransaccion($event)" (onCancel)="cerrarModal()">
+                </app-transaction-form>
+            </ion-content>
         </ng-template>
     </ion-modal>
 
