@@ -1,13 +1,12 @@
 <ion-item lines="full" class="ion-margin-bottom">
   <ion-icon *ngIf="icon" [name]="icon" slot="start" color="medium"></ion-icon>
-
-  <ion-select [label]="label" labelPlacement="floating" [formControl]="control" interface="action-sheet">
+  <ion-select labelPlacement="floating" [formControl]="control" interface="action-sheet">
+    <div slot="label">{{ label }}</div>
     <ion-select-option *ngFor="let opt of options" [value]="opt.value">
       {{ opt.text }}
     </ion-select-option>
   </ion-select>
 </ion-item>
-
-<ion-text color="danger" *ngIf="control.invalid && control.touched" class="error-message">
+<ion-text color="danger" *ngIf="control.invalid && control.touched" class="ion-padding-start">
   <small>Por favor, selecciona una opción.</small>
 </ion-text>

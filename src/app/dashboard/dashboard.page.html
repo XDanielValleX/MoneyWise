@@ -1,13 +1,59 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-title>Resumen Financiero</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding" [fullscreen]="true">
+
+  <div class="welcome-text ion-margin-bottom">
+    <h2>Hola, {{ userName }} </h2>
+    <p>Tu balance al día de hoy.</p>
+  </div>
+
+  <app-dashboard-card titulo="Saldo Actual" [monto]="totalBalance" tipo="neutral" icono="wallet" colorTema="primary">
+  </app-dashboard-card>
+
+  <ion-row>
+    <ion-col size="6">
+      <app-dashboard-card titulo="Ingresos" [monto]="totalIncome" tipo="ingreso" icono="arrow-up-circle"
+        colorTema="success">
+      </app-dashboard-card>
+    </ion-col>
+    <ion-col size="6">
+      <app-dashboard-card titulo="Gastos" [monto]="totalExpense" tipo="gasto" icono="arrow-down-circle"
+        colorTema="danger">
+      </app-dashboard-card>
+    </ion-col>
+  </ion-row>
+
+  <div class="categories-section ion-margin-top">
+    <h3>Gastos por Categoría</h3>
+    <app-progress-bar-category *ngFor="let cat of gastosPorCategoria" [categoria]="cat.nombre" [monto]="cat.total"
+      [porcentaje]="cat.porcentaje">
+    </app-progress-bar-category>
+  </div>
+
+  <div class="recent-transactions ion-margin-top">
+    <div class="transactions-header">
+      <h3>Últimos Movimientos</h3>
+      <ion-button fill="clear" size="small" routerLink="/tabs/transacciones">Ver todo</ion-button>
+    </div>
+
+    <ion-list lines="none" *ngIf="recentTransactions.length > 0">
+      <app-transaction-item *ngFor="let t of recentTransactions" [transaccion]="t"
+        (onClick)="verDetalleTransaccion($event)">
+      </app-transaction-item>
+    </ion-list>
+
+    <app-empty-state *ngIf="recentTransactions.length === 0" mensaje="No tienes transacciones recientes."
+      icono="wallet-outline" accion="Nuevo Movimiento" (onAccion)="irANuevaTransaccion()">
+    </app-empty-state>
+  </div>
+
 </ion-content>

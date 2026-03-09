@@ -5,7 +5,7 @@ import { AuthGuard } from './core/guards/auth-guard'; // candado de seguridad
 const routes: Routes = [
   {
     path: '',
-    // Todo lo que sea "tabs" (Dashboard y Transacciones) está protegido por el Guard
+    // "tabs" (Dashboard y Transacciones) está protegido por el Guard
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
     canActivate: [AuthGuard]
   },

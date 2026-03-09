@@ -1,11 +1,9 @@
 <ion-item lines="full" class="ion-margin-bottom">
   <ion-icon *ngIf="icon" [name]="icon" slot="start" color="medium"></ion-icon>
-
-  <ion-input [type]="type" [label]="label" labelPlacement="floating" [placeholder]="placeholder"
-    [formControl]="control">
+  <ion-input [type]="type" labelPlacement="floating" [placeholder]="placeholder" [formControl]="control">
+    <div slot="label">{{ label }}</div>
   </ion-input>
 </ion-item>
-
-<ion-text color="danger" *ngIf="control.invalid && control.touched" class="error-message">
+<ion-text color="danger" *ngIf="control.invalid && control.touched" class="ion-padding-start">
   <small>Este campo es requerido o inválido.</small>
 </ion-text>

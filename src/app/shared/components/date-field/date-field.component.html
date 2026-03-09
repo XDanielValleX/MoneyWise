@@ -1,10 +1,8 @@
 <ion-item lines="full" class="ion-margin-bottom">
   <ion-icon [name]="icon" slot="start" color="medium"></ion-icon>
   <ion-label>{{ label }}</ion-label>
-
   <ion-datetime-button datetime="mi-calendario"></ion-datetime-button>
 </ion-item>
-
 <ion-modal [keepContentsMounted]="true">
   <ng-template>
     <ion-datetime id="mi-calendario" presentation="date" [formControl]="control" [showDefaultButtons]="true"
@@ -12,7 +10,6 @@
     </ion-datetime>
   </ng-template>
 </ion-modal>
-
-<ion-text color="danger" *ngIf="control.invalid && control.touched" class="error-message">
+<ion-text color="danger" *ngIf="control.invalid && control.touched" class="ion-padding-start">
   <small>La fecha es obligatoria.</small>
 </ion-text>
