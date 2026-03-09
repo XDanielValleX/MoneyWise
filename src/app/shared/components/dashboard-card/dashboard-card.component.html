@@ -1,3 +1,12 @@
-<p>
-  dashboard-card works!
-</p>
+<ion-card class="dashboard-card">
+  <ion-card-header>
+    <div class="header-content">
+      <ion-icon [name]="icono" [color]="colorTema" class="card-icon"></ion-icon>
+      <ion-card-subtitle>{{ titulo }}</ion-card-subtitle>
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    <app-amount-display [monto]="monto" [tipo]="tipo" tamano="large"></app-amount-display>
+  </ion-card-content>
+</ion-card>

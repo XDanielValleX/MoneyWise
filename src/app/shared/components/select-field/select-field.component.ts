@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-select-field',
@@ -6,10 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./select-field.component.scss'],
   standalone: false
 })
-export class SelectFieldComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+export class SelectFieldComponent {
+  @Input() label: string = '';
+  @Input() icon?: string;
+  @Input() control!: FormControl;
+  @Input() options: { value: any, text: string }[] = []; // Lista de opciones a mostrar
 }

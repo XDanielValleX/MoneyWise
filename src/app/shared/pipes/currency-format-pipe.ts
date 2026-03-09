@@ -5,9 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false
 })
 export class CurrencyFormatPipe implements PipeTransform {
-
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(value: number): string {
+    if (value == null) return '$0.00';
+    // Formato genérico de moneda (puedes cambiar 'USD' a 'COP', 'MXN', etc.)
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
   }
-
 }

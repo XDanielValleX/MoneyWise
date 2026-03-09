@@ -1,13 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="register-container">
+    <div class="header-text">
+      <h2>¡Únete a MoneyWise! 🚀</h2>
+      <p>Crea tu cuenta y toma el control.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-input label="Nombre Completo" labelPlacement="floating" type="text" formControlName="nombre"
+          placeholder="Juan Pérez">
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="registerForm.get('nombre')?.touched && registerForm.get('nombre')?.invalid">
+        <span *ngIf="registerForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</span>
+        <span *ngIf="registerForm.get('nombre')?.errors?.['minlength']">Mínimo 3 caracteres.</span>
+      </ion-note>
+
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-input label="Correo Electrónico" labelPlacement="floating" type="email" formControlName="email"
+          placeholder="ejemplo@correo.com">
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+        <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es obligatorio.</span>
+        <span *ngIf="registerForm.get('email')?.errors?.['email']">Formato de correo inválido.</span>
+      </ion-note>
+
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="password">
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+        <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
+        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</span>
+      </ion-note>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Registrarse
+      </ion-button>
+    </form>
+  </div>
 </ion-content>

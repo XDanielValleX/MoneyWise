@@ -1,3 +1,32 @@
-<p>
-  transaction-form works!
-</p>
+<form [formGroup]="form" (ngSubmit)="submit()" class="form-container">
+
+  <app-select-field label="Tipo de Transacción" icon="swap-vertical" [control]="getControl('tipo')"
+    [options]="tipos"></app-select-field>
+
+  <app-input-field label="Monto" type="number" icon="cash" placeholder="0.00"
+    [control]="getControl('monto')"></app-input-field>
+
+  <app-select-field label="Categoría" icon="pricetag" [control]="getControl('categoria')"
+    [options]="categorias"></app-select-field>
+
+  <app-date-field label="Fecha" icon="calendar" [control]="getControl('fecha')"></app-date-field>
+
+  <app-input-field label="Descripción (Opcional)" type="text" icon="document-text" placeholder="Ej. Almuerzo de trabajo"
+    [control]="getControl('descripcion')"></app-input-field>
+
+  <div class="photo-section ion-margin-top ion-padding-horizontal">
+    <ion-label color="medium"><strong>Comprobante (Opcional)</strong></ion-label>
+
+    <app-photo-selector *ngIf="!fotoTemporal" (photoSelected)="setFoto($event)"></app-photo-selector>
+
+    <div class="photo-preview-wrapper" *ngIf="fotoTemporal">
+      <app-photo-preview [photoUrl]="fotoTemporal" (onRemove)="borrarFoto()"></app-photo-preview>
+    </div>
+  </div>
+
+  <div class="action-buttons ion-margin-top ion-padding">
+    <ion-button expand="block" fill="outline" color="medium" (click)="onCancel.emit()">Cancelar</ion-button>
+    <ion-button expand="block" type="submit" color="primary">Guardar Transacción</ion-button>
+  </div>
+
+</form>

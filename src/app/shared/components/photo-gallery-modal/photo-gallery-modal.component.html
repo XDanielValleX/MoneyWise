@@ -1,3 +1,14 @@
-<p>
-  photo-gallery-modal works!
-</p>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title>Comprobante</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" class="ion-text-center">
+  <div class="img-wrapper">
+    <img [src]="photoUrl" alt="Comprobante Completo" />
+  </div>
+</ion-content>

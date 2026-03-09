@@ -1,0 +1,35 @@
+.filter-container {
+    background: var(--ion-color-light);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+
+    .custom-searchbar {
+        padding: 0;
+        margin-bottom: 12px;
+        --box-shadow: none;
+        --background: #ffffff;
+        --border-radius: 8px;
+    }
+
+    .filters-row {
+        display: flex;
+        flex-direction: column;
+
+        .type-segment {
+            background: #ffffff;
+            border-radius: 8px;
+        }
+
+        .category-select {
+            --background: #ffffff;
+            border-radius: 8px;
+            --min-height: 45px;
+
+            ion-select {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}

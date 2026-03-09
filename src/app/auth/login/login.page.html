@@ -1,13 +1,46 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>MoneyWise</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="header-text">
+      <h2>¡Bienvenido de nuevo! 👋</h2>
+      <p>Inicia sesión para controlar tus finanzas.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-input label="Correo Electrónico" labelPlacement="floating" type="email" formControlName="email"
+          placeholder="ejemplo@correo.com">
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+        <span *ngIf="loginForm.get('email')?.errors?.['required']">El correo es obligatorio.</span>
+        <span *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido.</span>
+      </ion-note>
+
+      <ion-item class="ion-margin-bottom" fill="outline">
+        <ion-input label="Contraseña" labelPlacement="floating" type="password" formControlName="password">
+        </ion-input>
+      </ion-item>
+      <ion-note color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+        <span *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
+        <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</span>
+      </ion-note>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Ingresar
+      </ion-button>
+    </form>
+
+    <div class="register-link ion-text-center ion-margin-top">
+      <ion-text color="medium">¿No tienes una cuenta?</ion-text>
+      <ion-button fill="clear" (click)="goToRegister()">
+        Regístrate aquí
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

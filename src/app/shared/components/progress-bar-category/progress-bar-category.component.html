@@ -1,3 +1,10 @@
-<p>
-  progress-bar-category works!
-</p>
+<div class="progress-container ion-margin-bottom">
+  <div class="progress-header">
+    <app-category-badge [categoria]="categoria"></app-category-badge>
+
+    <span class="monto">{{ monto | currencyFormat }}</span>
+  </div>
+
+  <ion-progress-bar [value]="porcentaje" [color]="categoria | categoryColor">
+  </ion-progress-bar>
+</div>

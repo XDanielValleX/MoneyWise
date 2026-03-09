@@ -1,3 +1,33 @@
-<p>
-  filter-bar works!
-</p>
+<div class="filter-container">
+
+  <ion-searchbar placeholder="Buscar en descripción..." (ionInput)="buscar($event)" [debounce]="250"
+    class="custom-searchbar">
+  </ion-searchbar>
+
+  <div class="filters-row">
+
+    <ion-segment [value]="tipoFilter" (ionChange)="cambiarTipo($event)" class="type-segment">
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ingreso">
+        <ion-label>Ingresos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="gasto">
+        <ion-label>Gastos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-item lines="none" class="category-select ion-margin-top">
+      <ion-icon name="funnel" slot="start" color="medium"></ion-icon>
+      <ion-select interface="popover" [value]="categoriaFilter" (ionChange)="cambiarCategoria($event)">
+        <ion-select-option value="todas">Todas las categorías</ion-select-option>
+
+        <ion-select-option *ngFor="let cat of categorias" [value]="cat.nombre">
+          {{ cat.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+  </div>
+</div>

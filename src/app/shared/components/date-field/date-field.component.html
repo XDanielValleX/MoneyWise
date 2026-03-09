@@ -1,3 +1,18 @@
-<p>
-  date-field works!
-</p>
+<ion-item lines="full" class="ion-margin-bottom">
+  <ion-icon [name]="icon" slot="start" color="medium"></ion-icon>
+  <ion-label>{{ label }}</ion-label>
+
+  <ion-datetime-button datetime="mi-calendario"></ion-datetime-button>
+</ion-item>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime id="mi-calendario" presentation="date" [formControl]="control" [showDefaultButtons]="true"
+      doneText="Aceptar" cancelText="Cancelar">
+    </ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-text color="danger" *ngIf="control.invalid && control.touched" class="error-message">
+  <small>La fecha es obligatoria.</small>
+</ion-text>

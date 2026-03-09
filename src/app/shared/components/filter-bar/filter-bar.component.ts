@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CATEGORIAS } from '../../../core/constants/app.constants';
 
 @Component({
   selector: 'app-filter-bar',
@@ -6,10 +7,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filter-bar.component.scss'],
   standalone: false
 })
-export class FilterBarComponent  implements OnInit {
+export class FilterBarComponent {
+  // Importamos las categorías para llenar el menú desplegable automáticamente
+  categorias = CATEGORIAS;
 
-  constructor() { }
+  // Variables que guardan lo que el usuario ha seleccionado
+  searchText: string = '';
+  tipoFilter: string = 'todos';
+  categoriaFilter: string = 'todas';
 
-  ngOnInit() {}
+  // @Output permite "gritarle" a la pantalla principal que los filtros cambiaron
+  @Output() onSearch = new EventEmitter<string>();
+  @Output() onTypeChange = new EventEmitter<string>();
+  @Output() onCategoryChange = new EventEmitter<string>();
 
+  buscar(event: any) {
+    this.searchText = event.detail.value;
+    this.onSearch.emit(this.searchText);
+  }
+
+  cambiarTipo(event: any) {
+    this.tipoFilter = event.detail.value;
+    this.onTypeChange.emit(this.tipoFilter);
+  }
+
+  cambiarCategoria(event: any) {
+    this.categoriaFilter = event.detail.value;
+    this.onCategoryChange.emit(this.categoriaFilter);
+  }
 }

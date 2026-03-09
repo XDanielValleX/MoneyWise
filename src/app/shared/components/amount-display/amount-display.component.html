@@ -1,3 +1,5 @@
-<p>
-  amount-display works!
-</p>
+<ion-text [color]="getColor()" [class]="tamano">
+  <span class="monto">
+    {{ tipo === 'gasto' ? '- ' : '' }}{{ tipo === 'ingreso' ? '+ ' : '' }}{{ monto | currencyFormat }}
+  </span>
+</ion-text>

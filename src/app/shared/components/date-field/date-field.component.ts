@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-date-field',
@@ -6,10 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./date-field.component.scss'],
   standalone: false
 })
-export class DateFieldComponent  implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {}
-
+export class DateFieldComponent {
+  @Input() label: string = 'Fecha';
+  @Input() icon: string = 'calendar';
+  @Input() control!: FormControl;
 }

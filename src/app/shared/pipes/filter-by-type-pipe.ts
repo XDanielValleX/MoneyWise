@@ -1,13 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Transaccion } from '../../core/models/transaccion';
 
 @Pipe({
   name: 'filterByType',
   standalone: false
 })
 export class FilterByTypePipe implements PipeTransform {
-
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(transacciones: Transaccion[], tipo: string): Transaccion[] {
+    // Si no hay transacciones o el filtro es "todos", devolvemos la lista completa
+    if (!transacciones || !tipo || tipo === 'todos') {
+      return transacciones;
+    }
+    return transacciones.filter(t => t.tipo === tipo);
   }
-
 }
