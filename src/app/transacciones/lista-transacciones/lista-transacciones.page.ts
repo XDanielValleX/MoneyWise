@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Transaccion } from '../../core/models/transaccion';
 
 @Component({
   selector: 'app-lista-transacciones',
   templateUrl: './lista-transacciones.page.html',
   styleUrls: ['./lista-transacciones.page.scss'],
-  standalone: false // <-- ¡Esto es súper importante!
+  standalone: false
 })
 export class ListaTransaccionesPage implements OnInit {
 
-  // Estas son las variables que el HTML está pidiendo a gritos y no encuentra
-  transacciones: any[] = [];
-  filtroActual: string = 'todos';
+  transacciones: Transaccion[] = [];
+
+  // Variables para los filtros (coinciden con tu FilterBar)
   textoBusqueda: string = '';
+  filtroTipo: string = 'todos';
+  filtroCategoria: string = 'todas';
+
   isModalOpen: boolean = false;
 
   constructor(private router: Router) { }
@@ -28,25 +32,28 @@ export class ListaTransaccionesPage implements OnInit {
     ];
   }
 
-  alCambiarFiltro(nuevoFiltro: string) {
-    this.filtroActual = nuevoFiltro;
+  // Handlers para los @Outputs de tu FilterBarComponent
+  handleSearch(texto: string) {
+    this.textoBusqueda = texto; // Esto dispara el pipe searchByText automáticamente
   }
 
-  verDetalleTransaccion(transaccion: any) {
+  handleType(val: string) {
+    this.filtroTipo = val;
+  }
+
+  handleCategory(val: string) {
+    this.filtroCategoria = val;
+  }
+
+  verDetalleTransaccion(transaccion: Transaccion) {
     this.router.navigate(['/tabs/transacciones/detalle', transaccion.id]);
   }
 
-  // Funciones del Modal que el HTML no encontraba
-  abrirModal() {
-    this.isModalOpen = true;
-  }
-
-  cerrarModal() {
-    this.isModalOpen = false;
-  }
+  abrirModal() { this.isModalOpen = true; }
+  cerrarModal() { this.isModalOpen = false; }
 
   guardarNuevaTransaccion(datos: any) {
-    console.log('Guardando...', datos);
+    console.log('Datos listos para el service:', datos);
     this.cerrarModal();
   }
 }
