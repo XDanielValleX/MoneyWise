@@ -1,5 +1,6 @@
 .filter-container {
-    background: var(--ion-color-light);
+    // Usamos un color de "paso" para que sea gris oscuro en dark mode y gris claro en light mode
+    background: var(--ion-background-color);
     padding: 12px;
     border-radius: 12px;
     margin-bottom: 16px;
@@ -8,8 +9,10 @@
         padding: 0;
         margin-bottom: 12px;
         --box-shadow: none;
-        --background: #ffffff;
+        // CAMBIO CLAVE: Quitamos el #ffffff y usamos el fondo del tema
+        --background: var(--ion-background-color);
         --border-radius: 8px;
+        --color: var(--ion-text-color);
     }
 
     .filters-row {
@@ -17,18 +20,25 @@
         flex-direction: column;
 
         .type-segment {
-            background: #ffffff;
+            // Quitamos el blanco fijo para que no brille en modo oscuro
+            background: var(--ion-background-color);
             border-radius: 8px;
+            border: 1px solid var(--ion-color-step-150);
         }
 
         .category-select {
-            --background: #ffffff;
+            // Quitamos el blanco fijo
+            --background: var(--ion-background-color);
             border-radius: 8px;
-            --min-height: 45px;
+            --min-height: 48px;
+            margin-top: 12px;
+            border: 1px solid var(--ion-color-step-150);
 
             ion-select {
                 width: 100%;
                 max-width: 100%;
+                // Alineamos el texto para que no se pegue al borde
+                padding-inline-start: 12px;
             }
         }
     }

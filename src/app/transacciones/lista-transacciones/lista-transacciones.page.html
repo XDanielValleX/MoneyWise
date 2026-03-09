@@ -3,34 +3,24 @@
         <ion-title>Movimientos</ion-title>
     </ion-toolbar>
 
-    <ion-toolbar>
-        <ion-searchbar [(ngModel)]="textoBusqueda" placeholder="Buscar transacción..."></ion-searchbar>
-    </ion-toolbar>
-    <ion-toolbar>
-        <ion-segment [(ngModel)]="filtroActual">
-            <ion-segment-button value="todos">
-                <ion-label>Todos</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="ingreso">
-                <ion-label>Ingresos</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="gasto">
-                <ion-label>Gastos</ion-label>
-            </ion-segment-button>
-        </ion-segment>
-    </ion-toolbar>
+    <app-filter-bar (onSearch)="handleSearch($event)" (onTypeChange)="handleType($event)"
+        (onCategoryChange)="handleCategory($event)">
+    </app-filter-bar>
 </ion-header>
 
-<ion-content class="ion-padding" [fullscreen]="true">
+<ion-content class="ion-padding">
 
     <ion-list lines="none" *ngIf="transacciones.length > 0">
-        <app-transaction-item *ngFor="let t of transacciones" [transaccion]="t"
-            (onClick)="verDetalleTransaccion($event)">
+        <app-transaction-item
+            *ngFor="let t of transacciones | filterByType:filtroTipo | filterByCategory:filtroCategoria | searchByText:textoBusqueda"
+            [transaccion]="t" (onClick)="verDetalleTransaccion($event)">
         </app-transaction-item>
     </ion-list>
 
-    <app-empty-state *ngIf="transacciones.length === 0" mensaje="No hay transacciones." icono="document-text-outline"
-        accion="Crear una" (onAccion)="abrirModal()">
+    <app-empty-state
+        *ngIf="(transacciones | filterByType:filtroTipo | filterByCategory:filtroCategoria | searchByText:textoBusqueda).length === 0"
+        [mensaje]="textoBusqueda ? 'No hay resultados para esta búsqueda.' : 'No hay movimientos.'"
+        icono="search-outline" accion="Añadir" (onAccion)="abrirModal()">
     </app-empty-state>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -41,18 +31,8 @@
 
     <ion-modal [isOpen]="isModalOpen" (didDismiss)="cerrarModal()">
         <ng-template>
-            <ion-header class="ion-no-border">
-                <ion-toolbar>
-                    <ion-title>Nuevo Movimiento</ion-title>
-                    <ion-buttons slot="end">
-                        <ion-button (click)="cerrarModal()">Cerrar</ion-button>
-                    </ion-buttons>
-                </ion-toolbar>
-            </ion-header>
-            <ion-content class="ion-padding">
-                <app-transaction-form (onSave)="guardarNuevaTransaccion($event)" (onCancel)="cerrarModal()">
-                </app-transaction-form>
-            </ion-content>
+            <app-transaction-form (onSave)="guardarNuevaTransaccion($event)" (onCancel)="cerrarModal()">
+            </app-transaction-form>
         </ng-template>
     </ion-modal>
 
